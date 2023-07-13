@@ -2,6 +2,12 @@ package Sorting;
 
 import java.util.Arrays;
 
+
+/**
+ * Bubble sort: find the largest element, then put it at the end. Then we shrink our array space by 1. I'm using a recursive approach here 
+ * Time complexity: O(n^2). The worst case is n^2 since we need to go through the array n times to find the largest element, and each time there are n elements to look at 
+ */
+
 public class BubbleSort {
     
     public static void bubbleSort(int start, int end, String[] arr){

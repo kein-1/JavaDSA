@@ -2,6 +2,13 @@ package Sorting;
 
 import java.util.Arrays;
 
+
+/**
+ * Selection sort: find the smallest element, then put it at the the start. Then we shrink our array space by 1. I'm using a recursive approach here 
+ * Time complexity: O(n^2). The worst case is n^2 since we need to go through the array n times to find the largest element, and each time there are n elements to look at 
+ */
+
+
 public class SelectionSort {
     
     public static void selectionSort(int start, int end, String[] arr){

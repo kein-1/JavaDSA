@@ -2,6 +2,13 @@ package Sorting;
 
 import java.util.Arrays;
 
+
+/**
+ * Merge sort: divide and conquer algorithm. The goal is to keep dividing your array until you reach 1 element, then return this base case
+ * Once the elements are returned, we merge the two arrays and return a new array
+ * Time complexity: O(n log n). The number of times we divide is log n, since each step we are halfing the array. At each level, we are making n comparisons 
+ * This implementation uses a recursive approach and creates a new array. An alternative is to MergeSort in place, which is tougher 
+ */
 public class MergeSort {
     
     // The main sorting method 
