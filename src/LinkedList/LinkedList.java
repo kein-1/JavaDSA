@@ -26,6 +26,7 @@ public class LinkedList {
             this.headNode = n;
             this.tailNode = n;
             return;
+            return;
         }
         
         // Operation without tail node 
