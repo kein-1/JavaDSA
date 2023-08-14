@@ -2,12 +2,20 @@ package Graphs;
 
 import java.util.*;
 
-public class DirectedGraph {
-    public List<List<Integer>> adjList;
 
-    public DirectedGraph(int n){
+
+// Topological sort 
+public class DirectedGraph2 {
+    public List<List<Integer>> adjList;
+    public List<Integer> topologicalSortedListDFS;
+    public List<Integer> topologicalSortedListBFS;
+
+
+    public DirectedGraph2(int n){
         adjList = new LinkedList<>();
-        for (int i = 0; i <= n; i++){
+        topologicalSortedListDFS = new LinkedList<>();
+        topologicalSortedListBFS= new LinkedList<>();
+        for (int i = 0; i < n; i++){
             adjList.add(new LinkedList<>());
         }
     }
@@ -94,7 +102,37 @@ public class DirectedGraph {
 
     public boolean detectCycleBFS(int[] visited, int curr, int parent){
 
-        
+        visited[curr] = -1;
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{curr,parent});
+
+        while (!queue.isEmpty()){
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++){
+                int[] pair = queue.remove();
+                int val = pair[0], valParent = pair[1];
+
+                // Get current node's neighbors
+                List<Integer> neighbors = adjList.get(val);
+                
+                // Get its neighbors. If the node has neighbors that have been visited and it is not the node's parent, return false 
+                // Otherwise, just check if it has not been visited 
+
+                for (int vertex : neighbors){
+                    // Equal to parent, so skip and continue
+                    if (vertex == valParent) continue;
+
+                    if (visited[vertex] == -1 && vertex != valParent) return true;
+
+                    // Mark it as visited and add to queue 
+                    if (visited[vertex] != -1){
+                        visited[vertex] = -1;
+                        queue.add(new int[]{vertex,val});
+                    }
+                }
+            }
+        }
         return false;
     }
 
@@ -126,7 +164,58 @@ public class DirectedGraph {
         }
     }
 
-    public void buildGraph(DirectedGraph g){
+    public void topologicalSortDFS(){
+
+    }
+
+    public void topologicalSortBFS(int n){
+        int[] inDegree = new int[n];
+        inDegree[0] = -1;
+        // Go through the graph once and calculate all the indegrees for each node
+        // If we have a->b, then b will increase its indegree by 1 
+        // So inDegree[b]++;
+        for (int i = 0; i < n; i++){
+            List<Integer> neighbors = adjList.get(i);
+            for (int v : neighbors){
+                inDegree[v]++;
+            }
+        }
+        for (int i = 0; i < n; i++){
+            System.out.println("vertex and indegree: " + i + " " + inDegree[i]);
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+
+        // Add all nodes with 0 indgrees into the queue 
+        for (int i = 0; i < n; i++){
+            if (inDegree[i] == 0) queue.add(i);
+        }
+
+        // Remove from the queue. This is effectively removing an edge from u to v. So for each of 
+        // the removed node's neighbors, decrease their indegree by 1. 
+        // If it reaches 0, add this node to the queue. We only add nodes with indegree of 0 to queue 
+        while (!queue.isEmpty()){
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++){
+                int val = queue.remove();
+                topologicalSortedListBFS.add(val); // add to our list 
+                List<Integer> neighbors = adjList.get(val);
+                
+                // For each of this node's neighbors, decrease their indegree count by 1
+                for (int v : neighbors){
+                    inDegree[v]--;
+                    if (inDegree[v] == 0){
+                        queue.add(v);
+                    }
+                }
+            }
+            
+        }
+    }
+
+
+    public void buildGraph(DirectedGraph2 g){
         g.adjList.get(1).add(2);
         g.adjList.get(2).add(3);
         g.adjList.get(3).add(4);
@@ -138,25 +227,21 @@ public class DirectedGraph {
         g.adjList.get(8).add(2);
         g.adjList.get(8).add(9);
         g.adjList.get(9).add(10);
-        g.adjList.get(10).add(8);
+        g.adjList.get(8).add(10);
+        // g.adjList.get(10).add(8); // add this and comment out the above code to add cycle 
+
 
     }
 
 
     public static void main(String[] args) {
-        DirectedGraph g = new DirectedGraph(11);
+        DirectedGraph2 g = new DirectedGraph2(11);
         g.buildGraph(g);
+        g.topologicalSortBFS(g.adjList.size());
 
-        int[] visited = new int[11];
-        int[] path = new int[11];
-
-        visited[0] = -1;
-
-        System.out.println(g.detectCycleDFS(visited, path));
-        // g.printGraphDFS(visited);
-        // g.printGraphBFS(visited, 0);
-        // System.out.println(g.detectCycleDFS(visited, 0, -1));
-        // System.out.println(g.detectCycleBFS(visited, 0, -1));
+        for (int i : g.topologicalSortedListBFS){
+            System.out.println(i);
+        }
     }
 }
 

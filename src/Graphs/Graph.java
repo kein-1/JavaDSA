@@ -12,6 +12,9 @@ public class Graph {
         for (int i = 0; i < n; i++){
             adjList.add(new LinkedList<>());
         }
+
+
+        
     }
         
     public void printGraphDFS(int[] visited, int curr){
