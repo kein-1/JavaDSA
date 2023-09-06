@@ -3,7 +3,10 @@ package Graphs;
 import java.util.*;
 
 public class DirectedGraph {
-    public List<List<Integer>> adjList;
+    // public List<List<Integer>> adjList;
+
+    public List<List<Pair>> adjList;
+    
 
     public DirectedGraph(int n){
         adjList = new LinkedList<>();
@@ -65,7 +68,7 @@ public class DirectedGraph {
         }
         
         // We been here AND this node is not in our path, return false 
-        if (visited[curr] == -1 && path[curr] == 0) return false;
+        // if (visited[curr] == -1 && path[curr] == 0) return false;
 
 
         visited[curr] = -1;
